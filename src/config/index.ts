@@ -2,7 +2,7 @@
  * 环境配置封装
  */
 const env = import.meta.env.MODE || 'prod'
-const EnvConfig: { [key: string]: object } = {
+const EnvConfig: { [key: string]: { baseApi: string; mockApi: string } } = {
   dev: {
     baseApi: '/api',
     mockApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api'
