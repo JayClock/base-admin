@@ -2,7 +2,7 @@
   <router-view></router-view>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from '@vue/runtime-core'
 
 export default defineComponent({
@@ -11,4 +11,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import './assets/style/reset.css';
+@import './assets/style/index.scss';
 </style>
