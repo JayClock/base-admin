@@ -5,6 +5,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import config from '../config'
+import storage from './storage'
 
 const TOKEN_INVALD = 'Token认证失败，请重新登陆'
 const NETWORK_ERROR = '网络请求异常，请稍后重试'
@@ -15,7 +16,8 @@ axios.defaults.timeout = 8000
 // 请求拦截
 axios.interceptors.request.use((req) => {
   const { headers } = req
-  if (!headers.Authorization) headers.Authorization = `Bearer token`
+  const { token } = storage.getItem('userInfo')
+  if (!headers.Authorization) headers.Authorization = `Bearer ${token}`
   return req
 })
 

@@ -51,7 +51,8 @@ export default defineComponent({
     login() {
       this.$refs.userForm.validate((valid) => {
         if (valid) {
-          api.login(this.user).then(() => {
+          api.login(this.user).then((res) => {
+            this.$store.commit('saveUserInfo', res)
             this.$router.push('/welcome')
           })
         }
