@@ -18,7 +18,7 @@ const EnvConfig: { [key: string]: { baseApi: string; mockApi: string } } = {
 }
 export default {
   env,
-  mock: false,
+  mock: true,
   namespace: 'manager',
   ...EnvConfig[env]
 }
