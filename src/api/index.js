@@ -15,14 +15,50 @@ export default {
     return request({
       url: '/leave/count',
       method: 'get',
-      data: {}
+      data: {},
     })
   },
   getMenuList() {
     return request({
       url: '/menu/list',
       method: 'get',
-      data: {}
+      data: {},
+    })
+  },
+  getUserList(params) {
+    return request({
+      url: '/users/list',
+      method: 'get',
+      data: params
+    })
+  },
+  userDel(params) {
+    return request({
+      url: '/users/delete',
+      method: 'post',
+      data: params
+    })
+  },
+  getRoleList() {
+    return request({
+      url: '/roles/allList',
+      method: 'get',
+      data: {},
+    })
+  },
+  getDeptList() {
+    return request({
+      url: '/dept/list',
+      method: 'get',
+      data: {},
+    })
+  },
+  userSubmit(params) {
+    return request({
+      url: '/users/operate',
+      method: 'post',
+      data: params,
+      mock: false
     })
   }
 }
