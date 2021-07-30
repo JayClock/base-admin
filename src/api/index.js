@@ -1,7 +1,7 @@
 /**
  * api管理
  */
-import request from "../utils/request"
+import request from '../utils/request'
 
 export default {
   login(params) {
@@ -15,14 +15,14 @@ export default {
     return request({
       url: '/leave/count',
       method: 'get',
-      data: {},
+      data: {}
     })
   },
   getMenuList() {
     return request({
       url: '/menu/list',
       method: 'get',
-      data: {},
+      data: {}
     })
   },
   getUserList(params) {
@@ -43,14 +43,14 @@ export default {
     return request({
       url: '/roles/allList',
       method: 'get',
-      data: {},
+      data: {}
     })
   },
   getDeptList() {
     return request({
       url: '/dept/list',
       method: 'get',
-      data: {},
+      data: {}
     })
   },
   userSubmit(params) {
@@ -59,6 +59,22 @@ export default {
       method: 'post',
       data: params,
       mock: false
+    })
+  },
+  menuSubmit(params) {
+    return request({
+      url: '/menu/operate',
+      method: 'post',
+      data: params,
+      mock: false
+    })
+  },
+  roleOperate(params) {
+    return request({
+      url: '/roles/operate',
+      method: 'post',
+      data: params,
+      mock: true
     })
   }
 }
