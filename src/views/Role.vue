@@ -85,6 +85,13 @@ export default {
           prop: 'menuType'
         },
         {
+          label: '更新时间',
+          prop: 'updateTime',
+          formatter(row, column, value) {
+            return utils.formateDate(new Date(value))
+          }
+        },
+        {
           label: '创建时间',
           prop: 'createTime',
           formatter(row, column, value) {
@@ -95,7 +102,8 @@ export default {
       roleList: [],
       pager: {
         total: 0,
-        pageSize: 10
+        pageNum:1,
+        pageSize: 2
       },
       showModal: false,
       action: 'create',
@@ -117,7 +125,7 @@ export default {
     // 菜单列表初始化
     async getRoleList() {
       try {
-        const { list, page } = await api.getRoleList(this.queryForm)
+        const { list, page } = await api.getRoleList({ ...this.queryForm, ...this.pager })
         this.roleList = list
         this.pager.total = page.total
       } catch (e) {
@@ -134,11 +142,11 @@ export default {
       this.showModal = true
     },
     // 角色编辑
-    handleEdit(row) {
+    handleEdit({ _id, roleName, remark }) {
       this.action = 'edit'
       this.showModal = true
       this.$nextTick(() => {
-        this.roleForm = row
+        this.roleForm = { _id, roleName, remark }
       })
     },
     // 角色删除
@@ -168,7 +176,10 @@ export default {
         }
       })
     },
-    handleCurrentChange() {}
+    handleCurrentChange(current) {
+      this.pager.pageNum = current
+      this.getRoleList()
+    }
   }
 }
 </script>

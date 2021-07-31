@@ -39,11 +39,19 @@ export default {
       data: params
     })
   },
-  getRoleList() {
+  getRoleAllList() {
     return request({
       url: '/roles/allList',
       method: 'get',
-      data: {}
+      data: {},
+      mock: true
+    })
+  },
+  getRoleList(params) {
+    return request({
+      url: '/roles/list',
+      method: 'get',
+      data: params
     })
   },
   getDeptList() {
@@ -57,24 +65,21 @@ export default {
     return request({
       url: '/users/operate',
       method: 'post',
-      data: params,
-      mock: false
+      data: params
     })
   },
   menuSubmit(params) {
     return request({
       url: '/menu/operate',
       method: 'post',
-      data: params,
-      mock: false
+      data: params
     })
   },
   roleOperate(params) {
     return request({
       url: '/roles/operate',
       method: 'post',
-      data: params,
-      mock: true
+      data: params
     })
   }
 }
