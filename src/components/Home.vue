@@ -99,9 +99,8 @@ export default defineComponent({
     },
     async getMenuList() {
       try {
-        const list = await api.getMenuList()
+        const list = await api.getPermissionList()
         this.userMenu = list
-        console.log(this.userMenu)
       } catch (error) {
         console.error(error)
       }

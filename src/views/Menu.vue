@@ -89,11 +89,10 @@
   </div>
 </template>
 <script>
-import { defineComponent } from '@vue/runtime-core'
 import api from '../api'
 import utils from '../utils/utils'
 
-export default defineComponent({
+export default {
   name: 'menu',
   data() {
     return {
@@ -219,7 +218,7 @@ export default defineComponent({
         if (valid) {
           const { action, menuForm } = this
           const params = { ...menuForm, action }
-          api.menuSubmit(params)
+          await api.menuSubmit(params)
           this.showModal = false
           this.$message.success('操作成功')
           this.handleReset('dialogForm')
@@ -233,7 +232,7 @@ export default defineComponent({
       this.handleReset('dialogForm')
     }
   }
-})
+}
 </script>
 
 <style lang="scss"></style>
