@@ -114,7 +114,8 @@ export default defineComponent({
             const names = []
             const list = value.halfCheckedKeys || []
             list.forEach((key) => {
-              if (key) names.push(this.actionMap[key])
+              const name = this.actionMap[key]
+              if (key && name) names.push(this.actionMap[key])
             })
             return names.join()
           }
