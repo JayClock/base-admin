@@ -81,5 +81,12 @@ export default {
       method: 'post',
       data: params
     })
+  },
+  updatePermission(params) {
+    return request({
+      url: '/roles/update/permission',
+      method: 'post',
+      data: params,
+    })
   }
 }
