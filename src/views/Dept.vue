@@ -63,7 +63,9 @@
     </el-dialog>
   </div>
 </template>
-<script>import api from "../api"
+<script>
+import { ElMessage } from 'element-plus'
+import api from '../api'
 
 export default {
   name: 'dept',
@@ -91,13 +93,11 @@ export default {
         }
       ],
       deptList: [],
-      pager: {
-        pageNum: 1,
-        pageSize: 10
-      },
       action: 'create',
       showModal: false,
-      deptForm: {},
+      deptForm: {
+        parentId: [null]
+      },
       userList: [],
       rules: {
         parentId: [
@@ -130,10 +130,7 @@ export default {
   },
   methods: {
     async getDeptList() {
-      const list = await api.getDeptList({
-        ...this.queryForm,
-        ...this.pager
-      })
+      const list = await api.getDeptList(this.queryForm)
       this.deptList = list
     },
     async getAllUserList() {
@@ -163,7 +160,7 @@ export default {
     async handleDel(_id) {
       this.action = 'delete'
       await api.deptOperate({ _id, action: this.action })
-      this.$message.success('删除成功')
+      ElMessage({ type: 'success', message: '删除成功' })
       this.getDeptList()
     },
     handleClose() {
@@ -175,12 +172,10 @@ export default {
         if (valid) {
           const params = { ...this.deptForm, action: this.action }
           delete params.user
-          const res = await api.deptOperate(params)
-          if (res) {
-            this.$message.success('操作成功')
-            this.handleClose()
-            this.getDeptList()
-          }
+          await api.deptOperate(params)
+          ElMessage({ type: 'success', message: '操作成功' })
+          this.handleClose()
+          this.getDeptList()
         }
       })
     }

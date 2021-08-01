@@ -18,11 +18,11 @@ export default {
       data: {}
     })
   },
-  getMenuList() {
+  getMenuList(params) {
     return request({
       url: '/menu/list',
       method: 'get',
-      data: {}
+      data: params
     })
   },
   getUserList(params) {
@@ -30,6 +30,13 @@ export default {
       url: '/users/list',
       method: 'get',
       data: params
+    })
+  },
+  getAllUserList() {
+    return request({
+      url: '/users/all/list',
+      method: 'get',
+      data: {}
     })
   },
   userDel(params) {
@@ -43,8 +50,7 @@ export default {
     return request({
       url: '/roles/allList',
       method: 'get',
-      data: {},
-      mock: true
+      data: {}
     })
   },
   getRoleList(params) {
@@ -59,6 +65,13 @@ export default {
       url: '/dept/list',
       method: 'get',
       data: {}
+    })
+  },
+  deptOperate(params) {
+    return request({
+      url: '/dept/operate',
+      method: 'post',
+      data: params
     })
   },
   userSubmit(params) {
@@ -86,7 +99,7 @@ export default {
     return request({
       url: '/roles/update/permission',
       method: 'post',
-      data: params,
+      data: params
     })
   }
 }
