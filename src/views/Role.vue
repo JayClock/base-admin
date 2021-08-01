@@ -86,11 +86,12 @@
   </div>
 </template>
 <script>
+import { defineComponent } from '@vue/runtime-core'
 import { ElMessage } from 'element-plus'
 import api from '../api'
 import utils from '../utils/utils'
 
-export default {
+export default defineComponent({
   name: 'role',
   data() {
     return {
@@ -108,7 +109,15 @@ export default {
         },
         {
           label: '权限列表',
-          prop: 'menuType'
+          prop: 'permissionList',
+          formatter: (row, column, value) => {
+            const names = []
+            const list = value.halfCheckedKeys || []
+            list.forEach((key) => {
+              if (key) names.push(this.actionMap[key])
+            })
+            return names.join()
+          }
         },
         {
           label: '更新时间',
@@ -148,7 +157,9 @@ export default {
       menuList: [],
       defaultProps: {
         label: 'menuName'
-      }
+      },
+      // 菜单映射表
+      actionMap: {}
     }
   },
   mounted() {
@@ -171,6 +182,7 @@ export default {
       try {
         const list = await api.getMenuList()
         this.menuList = list
+        this.getActionMap(list)
       } catch (e) {
         throw new Error(e)
       }
@@ -261,9 +273,25 @@ export default {
         message: '设置成功'
       })
       this.getRoleList()
+    },
+    getActionMap(list) {
+      const actionMap = {}
+      const deep = (arr) => {
+        while (arr.length) {
+          const item = arr.pop()
+          if (item.children && item.action) {
+            actionMap[item._id] = item.menuName
+          }
+          if (item.children && !item.action) {
+            deep(item.children)
+          }
+        }
+      }
+      deep(JSON.parse(JSON.stringify(list)))
+      this.actionMap = actionMap
     }
   }
-}
+})
 </script>
 
 <style lang="scss"></style>
