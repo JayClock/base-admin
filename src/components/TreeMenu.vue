@@ -6,14 +6,17 @@
       :key="menu._id"
     >
       <template #title>
-        <i :class="menu.icon"></i>
+        <i v-if="menu.icon" :class="menu.icon"></i>
         <span>{{ menu.menuName }}</span>
       </template>
       <tree-menu :user-menu="menu.children"></tree-menu>
     </el-submenu>
-    <el-menu-item v-else-if="menu.menuType === 1" :index="menu.path" :key="menu._id">{{
-      menu.menuName
-    }}</el-menu-item>
+    <el-menu-item v-else-if="menu.menuType === 1" :index="menu.path" :key="menu._id">
+      <template #title>
+        <i v-if="menu.icon" :class="menu.icon"></i>
+        <span>{{ menu.menuName }}</span>
+      </template>
+    </el-menu-item>
   </template>
 </template>
 <script>

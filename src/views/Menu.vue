@@ -89,6 +89,7 @@
   </div>
 </template>
 <script>
+import { ElMessage } from 'element-plus'
 import api from '../api'
 import utils from '../utils/utils'
 
@@ -209,7 +210,10 @@ export default {
     },
     async handleDel(_id) {
       await api.menuSubmit({ _id, action: 'delete' })
-      this.$message.success('删除成功')
+      ElMessage({
+        type: 'success',
+        message: '删除成功'
+      })
       this.getMenuList()
     },
     // 菜单操作-提交
@@ -220,7 +224,10 @@ export default {
           const params = { ...menuForm, action }
           await api.menuSubmit(params)
           this.showModal = false
-          this.$message.success('操作成功')
+          ElMessage({
+            type: 'success',
+            message: '操作成功'
+          })
           this.handleReset('dialogForm')
           this.getMenuList()
         }

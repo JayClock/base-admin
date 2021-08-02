@@ -9,8 +9,8 @@ const debug = import.meta.env !== 'production'
 
 const state = {
   userInfo: storage.getItem('userInfo') || {}, // 获取用户信息
-  menuList: storage.getItem('menuList'),
-  actionList: storage.getItem('actionList'),
+  menuList: storage.getItem('menuList') || [],
+  actionList: storage.getItem('actionList') || [],
   noticeCount: 0
 }
 

@@ -208,7 +208,10 @@ export default defineComponent({
     // 角色删除
     async handleDel(_id) {
       await api.roleOperate({ _id, action: 'delete' })
-      this.$message.success('删除成功')
+      ElMessage({
+        type: 'success',
+        message: '删除成功'
+      })
       this.getRoleList()
     },
     // 弹框关闭
@@ -225,7 +228,10 @@ export default defineComponent({
           const res = await api.roleOperate(params)
           if (res) {
             this.showModal = false
-            this.$message.success('创建成功')
+            ElMessage({
+              type: 'success',
+              message: '创建成功'
+            })
             this.handleReset('dialogForm')
             this.getRoleList()
           }

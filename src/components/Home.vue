@@ -68,7 +68,7 @@ export default defineComponent({
       isCollapse: false, // 侧边栏是否显示
       userInfo: this.$store.state.userInfo,
       noticeCount: 0,
-      userMenu: [],
+      userMenu: this.$store.state.menuList,
       activeMenu: location.hash.slice(1)
     }
   },
@@ -97,10 +97,12 @@ export default defineComponent({
         console.error(error)
       }
     },
+    // 获取用户菜单信息
     async getMenuList() {
       try {
-        const list = await api.getPermissionList()
-        this.userMenu = list
+        const { menuList, actionList } = await api.getPermissionList()
+        this.$store.commit('saveUserMenu', menuList)
+        this.$store.commit('saveUserAction', actionList)
       } catch (error) {
         console.error(error)
       }
