@@ -19,6 +19,8 @@
 
 <script>
 import { defineComponent } from '@vue/runtime-core'
+import storage from '@/utils/storage'
+import utils from '@/utils/utils'
 import api from '../api'
 
 export default defineComponent({
@@ -51,12 +53,25 @@ export default defineComponent({
     login() {
       this.$refs.userForm.validate((valid) => {
         if (valid) {
-          api.login(this.user).then((res) => {
+          api.login(this.user).then(async (res) => {
             this.$store.commit('saveUserInfo', res)
+            await this.loadAsyncRoutes()
             this.$router.push('/welcome')
           })
         }
       })
+    },
+    async loadAsyncRoutes() {
+      const userInfo = storage.getItem('userInfo') || {}
+      if (userInfo.token) {
+        const { menuList } = await api.getPermissionList()
+        const routes = utils.generateRoute(menuList)
+        routes.forEach((route) => {
+          const url = `./../views/${route.component}.vue`
+          route.component = () => import(url)
+          this.$router.addRoute('home', route)
+        })
+      }
     }
   }
 })

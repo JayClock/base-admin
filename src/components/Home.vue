@@ -84,8 +84,7 @@ export default defineComponent({
     // 退出登陆操作
     handleLogout(key) {
       if (key === 'email') return
-      this.$store.commit('saveUserInfo', '')
-      this.userInfo = null
+      this.$store.commit('saveUserInfo', {})
       this.$router.push('/login')
     },
     // 获取通知数量

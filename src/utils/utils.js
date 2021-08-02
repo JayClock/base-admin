@@ -18,10 +18,33 @@ export default {
     // eslint-disable-next-line no-restricted-syntax
     for (const k in o) {
       if (new RegExp(`(${k})`).test(fmt)) {
-        const val = `${o[k]  }`
-        fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? val : (`00${  val}`).substr(val.length))
+        const val = `${o[k]}`
+        fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? val : `00${val}`.substr(val.length))
       }
     }
     return fmt
+  },
+  generateRoute(menuList) {
+    const routes = []
+    const deepList = (list) => {
+      while (list.length) {
+        const item = list.pop()
+        if (item.action) {
+          routes.push({
+            name: item.component,
+            path: item.path,
+            meta: {
+              title: item.menuName
+            },
+            component: item.component
+          })
+        }
+        if (item.children && !item.action) {
+          deepList(item.children)
+        }
+      }
+    }
+    deepList(menuList)
+    return routes
   }
 }
