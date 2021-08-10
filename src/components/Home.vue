@@ -1,6 +1,64 @@
+<script setup>
+import { computed, onMounted, ref } from '@vue/runtime-core'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import TreeMenu from './TreeMenu.vue'
+import api from '../api'
+import BreadCrumb from './BreadCrumb.vue'
+
+const store = useStore()
+const router = useRouter()
+
+// 是否显示侧边栏
+const isCollapse = ref(false)
+// 控制侧边栏显示隐藏
+const toggle = () => {
+  isCollapse.value = !isCollapse.value
+}
+
+// 用户信息
+const userInfo = computed(() => store.state.userInfo)
+// 退出登陆操作
+const handleLogout = (key) => {
+  if (key === 'email') return
+  store.commit('saveUserInfo', {})
+  router.push('/login')
+}
+
+// 通知数量
+const noticeCount = ref(0)
+// 获取通知数量
+const getNoticeCount = async () => {
+  try {
+    const count = await api.noticeCount()
+    noticeCount.value = count
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 用户菜单
+const userMenu = computed(() => store.state.menuList)
+// 获取用户菜单信息
+const getMenuList = async () => {
+  try {
+    const { menuList, actionList } = await api.getPermissionList()
+    store.commit('saveUserMenu', menuList)
+    store.commit('saveUserAction', actionList)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+onMounted(() => {
+  getMenuList()
+  getNoticeCount()
+})
+</script>
+
 <template>
   <div class="basic-layout">
-    <div :class="['nav-side', isCollapse ? 'fold' : 'unfold']">
+    <div class="nav-side" :class="[isCollapse ? 'fold' : 'unfold']">
       <!-- 系统LOGO -->
       <div class="logo">
         <img src="./../assets/logo.png" />
@@ -18,7 +76,7 @@
         <tree-menu :user-menu="userMenu"></tree-menu>
       </el-menu>
     </div>
-    <div :class="['content-right', isCollapse ? 'fold' : 'unfold']">
+    <div class="content-right" :class="[isCollapse ? 'fold' : 'unfold']">
       <div class="nav-top">
         <div class="nav-left">
           <div class="menu-fold" @click="toggle"><i class="el-icon-s-fold"></i></div>
@@ -51,66 +109,7 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from '@vue/runtime-core'
-import TreeMenu from './TreeMenu.vue'
-import api from '../api'
-import BreadCrumb from './BreadCrumb.vue'
-
-export default defineComponent({
-  name: 'Home',
-  components: {
-    TreeMenu,
-    BreadCrumb
-  },
-  data() {
-    return {
-      isCollapse: false, // 侧边栏是否显示
-      userInfo: this.$store.state.userInfo,
-      noticeCount: 0,
-      userMenu: this.$store.state.menuList,
-      activeMenu: location.hash.slice(1)
-    }
-  },
-  mounted() {
-    this.getNoticeCount()
-    this.getMenuList()
-  },
-  methods: {
-    // 切换侧边栏显示
-    toggle() {
-      this.isCollapse = !this.isCollapse
-    },
-    // 退出登陆操作
-    handleLogout(key) {
-      if (key === 'email') return
-      this.$store.commit('saveUserInfo', {})
-      this.$router.push('/login')
-    },
-    // 获取通知数量
-    async getNoticeCount() {
-      try {
-        const count = await api.noticeCount()
-        this.noticeCount = count
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    // 获取用户菜单信息
-    async getMenuList() {
-      try {
-        const { menuList, actionList } = await api.getPermissionList()
-        this.$store.commit('saveUserMenu', menuList)
-        this.$store.commit('saveUserAction', actionList)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-  }
-})
-</script>
-
-<style lang="scss">
+<style lang="scss" scoped>
 .basic-layout {
   position: relative;
   .nav-side {
